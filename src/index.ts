@@ -60,7 +60,7 @@ async function runRetryCmd(inputs: Inputs): Promise<void> {
   }
 
   try {
-    await execSync(inputs.on_retry_command, { stdio: 'inherit' });
+    await execSync(inputs.on_retry_command, { stdio: 'inherit', env: { ...process.env } });
     // eslint-disable-next-line
   } catch (error: any) {
     info(`WARNING: Retry command threw the error ${error.message}`);
@@ -78,8 +78,8 @@ async function runCmd(attempt: number, inputs: Inputs) {
   debug(`Running command ${inputs.command} on ${OS} using shell ${executable}`);
   const child =
     attempt > 1 && inputs.new_command_on_retry
-      ? spawn(inputs.new_command_on_retry, { shell: executable })
-      : spawn(inputs.command, { shell: executable });
+      ? spawn(inputs.new_command_on_retry, { shell: executable, env: { ...process.env } })
+      : spawn(inputs.command, { shell: executable, env: { ...process.env } });
 
   child.stdout?.on('data', (data) => {
     process.stdout.write(data);

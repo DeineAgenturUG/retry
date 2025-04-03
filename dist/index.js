@@ -24852,6 +24852,17 @@ exports["default"] = _default;
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -24951,7 +24962,7 @@ function runRetryCmd(inputs) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, (0, child_process_1.execSync)(inputs.on_retry_command, { stdio: 'inherit' })];
+                    return [4 /*yield*/, (0, child_process_1.execSync)(inputs.on_retry_command, { stdio: 'inherit', env: __assign({}, process.env) })];
                 case 2:
                     _a.sent();
                     return [3 /*break*/, 4];
@@ -24978,8 +24989,8 @@ function runCmd(attempt, inputs) {
                     timeout = false;
                     (0, core_1.debug)("Running command ".concat(inputs.command, " on ").concat(OS, " using shell ").concat(executable));
                     child = attempt > 1 && inputs.new_command_on_retry
-                        ? (0, child_process_1.spawn)(inputs.new_command_on_retry, { shell: executable })
-                        : (0, child_process_1.spawn)(inputs.command, { shell: executable });
+                        ? (0, child_process_1.spawn)(inputs.new_command_on_retry, { shell: executable, env: __assign({}, process.env) })
+                        : (0, child_process_1.spawn)(inputs.command, { shell: executable, env: __assign({}, process.env) });
                     (_a = child.stdout) === null || _a === void 0 ? void 0 : _a.on('data', function (data) {
                         process.stdout.write(data);
                     });
